@@ -1,1 +1,1 @@
-web: yarn start-prod-test-rollback
+web: yarn start-prod
