@@ -30,3 +30,11 @@ jobs:
           command: yarn test:e2e
           start: yarn start-prod
           wait-on: http://localhost:5000
+      - name: deploy
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "pokedex-0402"
+          heroku_email: "copppe@gmail.com"
+          healthcheck: "https://pokedex-0402.herokuapp.com/health"
+          rollbackonhealthcheckfailed: true
