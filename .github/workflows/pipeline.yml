@@ -52,14 +52,14 @@ jobs:
           healthcheck: "https://pokedex-0402.herokuapp.com/health"
           rollbackonhealthcheckfailed: true
       - name: notify discord a build fails
-          uses: rjstone/discord-webhook-notify@v1
+          uses: rjstone/discord-webhook-notify@v1.0.4
           if: failure()
           with:
               severity: error
               details: Test Failed!
               webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: notify discord a check gets cancelled
-          uses: rjstone/discord-webhook-notify@v1
+          uses: rjstone/discord-webhook-notify@v1.0.4
           if: cancelled()
           with:
               severity: warn
@@ -78,7 +78,7 @@ jobs:
           DEFAULT_BUMP: patch
           RELEASE_BRANCHES: master
       - name: notify discord new version gets deployed
-          uses: rjstone/discord-webhook-notify@v1
+          uses: rjstone/discord-webhook-notify@v1.0.4
           if: success()
           with:
               severity: info
