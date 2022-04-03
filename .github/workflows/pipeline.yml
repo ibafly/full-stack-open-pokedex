@@ -62,7 +62,7 @@ jobs:
             severity: error
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
             text: Build failed
-            description: 'commit $COMMIT by $COMMITTER broke the build :('
+            description: "commit $COMMIT by $COMMITTER broke the build :("
             footer: 'Severity: Error'
   tag_release:
     needs: [simple_deployment_pipeline]
@@ -84,5 +84,5 @@ jobs:
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
             text: A new version of Pokedex deployed
             # reference env vars like $COMMITTER or ${{ env.COMMITTER }}
-            description: 'to https://pokedex-0402.herokuapp.com/ by $COMMITTER'
+            description: "to https://pokedex-0402.herokuapp.com/ by $COMMITTER"
             footer: 'Severity: Infomational'

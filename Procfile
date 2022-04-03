@@ -1,1 +1,1 @@
-web: yarn start-prod-nooo
+web: yarn start-prod
