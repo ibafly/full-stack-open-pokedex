@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
-      - name: gihub context
+      - name: github context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
@@ -54,24 +54,22 @@ jobs:
       - name: notify discord a build fails
         uses: rjstone/discord-webhook-notify@v1.0.4
         if: failure()
+        env:
+          COMMIT: ${{ github.event.head_commit.url }}
+          COMMITTER: ${{ github.event.head_commit.committer.username }}
         with:
             severity: error
-            details: Test Failed!
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-      - name: notify discord a check gets cancelled
-        uses: rjstone/discord-webhook-notify@v1.0.4
-        if: cancelled()
-        with:
-            severity: warn
-            details: Test Cancelled!
-            webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+            text: Build failed
+            description: 'commit ${{ COMMIT }} by ${{ COMMITTER }} broke the build :('
+            footer: 'Severity: Error'
   tag_release:
     needs: [simple_deployment_pipeline]
+    if: ${{ !contains(join(github.event.commits.*.message, ' '), '#skip') }}
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
       - name: bump version and push tag
-        if: ${{ !contains(join(github.event.commits.*.message, ' '), '#skip') }}
         uses: anothrNick/github-tag-action@1.36.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -80,7 +78,11 @@ jobs:
       - name: notify discord new version gets deployed
         uses: rjstone/discord-webhook-notify@v1.0.4
         if: success()
+        env:
+          COMMITTER: ${{ github.event.head_commit.committer.username }}
         with:
             severity: info
-            details: Test Succeeded!
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+            text: A new version of Pokedex deployed
+            description: 'to https://pokedex-0402.herokuapp.com/ by ${{ COMMITTER }}'
+            footer: 'Severity: Infomational'
