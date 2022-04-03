@@ -62,7 +62,7 @@ jobs:
             severity: error
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
             text: Build failed
-            description: "commit $COMMIT by $COMMITTER broke the build :("
+            description: "commit ${{ env.COMMIT }} by ${{ env.COMMITTER }} broke the build :("
             footer: 'Severity: Error'
   tag_release:
     needs: [simple_deployment_pipeline]
